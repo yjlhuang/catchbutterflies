@@ -41,20 +41,113 @@
 
     <div class="footer">唯一真王：Doe 閣下 | 師爺團榮譽出品</div>
 
-    <script>
-        const codes = {
-            gemini: `(async () => { console.log("🚀 啟動中..."); const container = document.querySelectorAll('.chat-history')[1]; if (!container) { alert("❌ 找不到容器"); return; } let prevHeight = container.scrollHeight; let stuckCount = 0; const MAX_STUCK = 10; while (stuckCount < MAX_STUCK) { container.scrollTop = 0; await new Promise(r => setTimeout(r, 1500)); const currentHeight = container.scrollHeight; if (currentHeight === prevHeight) { stuckCount++; } else { stuckCount = 0; prevHeight = currentHeight; } } const turns = container.querySelectorAll('.conversation-container'); let formattedText = ""; turns.forEach((turn) => { const userEl = turn.querySelector('user-query'); const modelEl = turn.querySelector('model-response'); if (userEl) formattedText += "--------------------------\\n\\n我：\\n" + userEl.innerText.trim() + "\\n\\n"; if (modelEl) formattedText += "--------------------------\\n\\nGemini：\\n" + modelEl.innerText.trim() + "\\n\\n"; }); formattedText += "--------------------------"; await navigator.clipboard.writeText(formattedText); alert("✅ 完成！共 " + turns.length + " 輪對話已複製"); })();`,
-            
-            claude: `(async () => { console.log("🚀 啟動中..."); const scrollContainer = document.querySelector('.overflow-y-auto.\\\\[scrollbar-gutter\\\\:stable\\\\]'); const inner = scrollContainer.querySelector('.flex-1.flex.flex-col.px-4'); if (!inner) { alert("❌ 找不到容器"); return; } let prevHeight = scrollContainer.scrollHeight; let stuckCount = 0; while (stuckCount < 10) { scrollContainer.scrollTop = 0; await new Promise(r => setTimeout(r, 1500)); const currentHeight = scrollContainer.scrollHeight; if (currentHeight === prevHeight) { stuckCount++; } else { stuckCount = 0; prevHeight = currentHeight; } } const children = Array.from(inner.children); let formattedText = ""; children.forEach((el) => { const child = el.children[0]; if (!child) return; const isUser = child.classList.contains('contents'); const isModel = child.classList.contains('group'); if (!isUser && !isModel) return; const roleLabel = isUser ? "我" : "Claude"; let content = child.innerText.trim(); if (isUser) { content = content.replace(/^You said:\\\s*/i, '').replace(/\\\n\\\n[\\\d月日年\\\s]+$/, '').trim(); const parts = content.split(/\\\n\\\n/); if (parts.length >= 2 && parts[0].trim() === parts[1].trim()) content = parts.slice(1).join('\\\n\\\n').trim(); } else { content = content.replace(/^Claude responded:\\\s*/i, '').trim(); const parts = content.split(/\\\n\\\n/); if (parts.length >= 2 && parts[1].startsWith(parts[0].trim())) content = parts.slice(1).join('\\\n\\\n').trim(); } formattedText += "--------------------------\\n\\n" + roleLabel + "：\\n" + content + "\\n\\n"; }); formattedText += "--------------------------"; await navigator.clipboard.writeText(formattedText); alert("✅ 完成！對話已複製"); })();`,
-            
-            gpt: `(function() { console.clear(); const collected = new Map(); const observer = new MutationObserver(() => { document.querySelectorAll('[data-testid^="conversation-turn-"]').forEach(turn => { const id = turn.getAttribute('data-testid'); if (collected.has(id)) return; const text = turn.innerText.trim(); if (!text) return; const isAssistant = !!turn.querySelector('.markdown'); collected.set(id, { role: isAssistant ? 'GPT' : '我', text }); }); }); observer.observe(document.body, { childList: true, subtree: true }); const btn = document.createElement('button'); btn.innerText = '✨ 滾動完成，點我複製 ✨'; btn.style.cssText = 'position:fixed;top:20px;right:20px;z-index:999999;padding:12px 20px;background:#10a37f;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,0.2)'; btn.onclick = async () => { if (collected.size === 0) { alert('⚠️ 還沒攔截到對話！'); return; } let out = ''; collected.forEach(({ role, text }) => { out += "--------------------------\\n\\n" + role + "：\\n" + text + "\\n\\n"; }); out += '--------------------------'; await navigator.clipboard.writeText(out); alert("✅ 完成！共 " + collected.size + " 段對話已複製"); observer.disconnect(); btn.remove(); }; document.body.appendChild(btn); })();`
-        };
+<script>
+    const codes = {
+        // 1. Gemini 協議 (已更名)
+        gemini: `(async () => { 
+            console.log("🚀 啟動中..."); 
+            const container = document.querySelectorAll('.chat-history')[1]; 
+            if (!container) { alert("❌ 找不到容器"); return; } 
+            let prevHeight = container.scrollHeight; 
+            let stuckCount = 0; 
+            while (stuckCount < 10) { 
+                container.scrollTop = 0; 
+                await new Promise(r => setTimeout(r, 1500)); 
+                const currentHeight = container.scrollHeight; 
+                if (currentHeight === prevHeight) { stuckCount++; } 
+                else { stuckCount = 0; prevHeight = currentHeight; } 
+            } 
+            const turns = container.querySelectorAll('.conversation-container'); 
+            let out = ""; 
+            turns.forEach((turn) => { 
+                const u = turn.querySelector('user-query'); 
+                const m = turn.querySelector('model-response'); 
+                if (u) out += "--------------------------\\n\\n我：\\n" + u.innerText.trim() + "\\n\\n"; 
+                if (m) out += "--------------------------\\n\\nGemini：\\n" + m.innerText.trim() + "\\n\\n"; 
+            }); 
+            out += "--------------------------"; 
+            await navigator.clipboard.writeText(out); 
+            alert("✅ 完成！共 " + turns.length + " 輪對話已複製 (Gemini 版)"); 
+        })();`,
 
-        function copyCode(platform) {
-            navigator.clipboard.writeText(codes[platform]).then(() => {
-                alert('✅ ' + platform.toUpperCase() + ' 協議已裝載至剪貼簿！請去 F12 貼上。');
-            });
-        }
-    </script>
+        // 2. Claude 協議 (保持原始穩定邏輯)
+        claude: `(async () => { 
+            console.log("🚀 啟動中..."); 
+            const scrollContainer = document.querySelector('.overflow-y-auto.\\\\[scrollbar-gutter\\\\:stable\\\\]'); 
+            const inner = scrollContainer.querySelector('.flex-1.flex.flex-col.px-4'); 
+            if (!inner) { alert("❌ 找不到容器"); return; } 
+            let prevHeight = scrollContainer.scrollHeight; 
+            let stuckCount = 0; 
+            while (stuckCount < 10) { 
+                scrollContainer.scrollTop = 0; 
+                await new Promise(r => setTimeout(r, 1500)); 
+                const currentHeight = scrollContainer.scrollHeight; 
+                if (currentHeight === prevHeight) { stuckCount++; } 
+                else { stuckCount = 0; prevHeight = currentHeight; } 
+            } 
+            const children = Array.from(inner.children); 
+            let out = ""; 
+            children.forEach((el) => { 
+                const child = el.children[0]; if (!child) return; 
+                const isUser = child.classList.contains('contents'); 
+                const isModel = child.classList.contains('group'); 
+                if (!isUser && !isModel) return; 
+                const roleLabel = isUser ? "我" : "Claude"; 
+                let content = child.innerText.trim(); 
+                if (isUser) { 
+                    content = content.replace(/^You said:\\\s*/i, '').replace(/\\\n\\\n[\\\d月日年\\\s]+$/, '').trim(); 
+                    const parts = content.split(/\\\n\\\n/); 
+                    if (parts.length >= 2 && parts[0].trim() === parts[1].trim()) content = parts.slice(1).join('\\\n\\\n').trim(); 
+                } else { 
+                    content = content.replace(/^Claude responded:\\\s*/i, '').trim(); 
+                    const parts = content.split(/\\\n\\\n/); 
+                    if (parts.length >= 2 && parts[1].startsWith(parts[0].trim())) content = parts.slice(1).join('\\\n\\\n').trim(); 
+                } 
+                out += "--------------------------\\n\\n" + roleLabel + "：\\n" + content + "\\n\\n"; 
+            }); 
+            out += "--------------------------"; 
+            await navigator.clipboard.writeText(out); 
+            alert("✅ 完成！對話已複製 (Claude 版)"); 
+        })();`,
+
+        // 3. ChatGPT 協議 (捕蝶協議)
+        gpt: `(function() { 
+            console.clear(); 
+            const collected = new Map(); 
+            const observer = new MutationObserver(() => { 
+                document.querySelectorAll('[data-testid^="conversation-turn-"]').forEach(turn => { 
+                    const id = turn.getAttribute('data-testid'); 
+                    if (collected.has(id)) return; 
+                    const text = turn.innerText.trim(); 
+                    if (!text) return; 
+                    const isAssistant = !!turn.querySelector('.markdown'); 
+                    collected.set(id, { role: isAssistant ? 'GPT' : '我', text }); 
+                }); 
+            }); 
+            observer.observe(document.body, { childList: true, subtree: true }); 
+            const btn = document.createElement('button'); 
+            btn.innerText = '✨ 滾動完成，點我複製 ✨'; 
+            btn.style.cssText = 'position:fixed;top:20px;right:20px;z-index:999999;padding:12px 20px;background:#10a37f;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,0.2)'; 
+            btn.onclick = async () => { 
+                if (collected.size === 0) { alert('⚠️ 還沒攔截到對話！'); return; } 
+                let out = ''; 
+                collected.forEach(({ role, text }) => { 
+                    out += "--------------------------\\n\\n" + role + "：\\n" + text + "\\n\\n"; 
+                }); 
+                out += '--------------------------'; 
+                await navigator.clipboard.writeText(out); 
+                alert("✅ 完成！共 " + collected.size + " 段對話已複製 (ChatGPT 版)"); 
+                observer.disconnect(); btn.remove(); 
+            }; 
+            document.body.appendChild(btn); 
+        })();`
+    };
+
+    function copyCode(platform) {
+        navigator.clipboard.writeText(codes[platform]).then(() => {
+            alert('✅ ' + platform.toUpperCase() + ' 協議已裝載至剪貼簿！');
+        });
+    }
+</script>
 </body>
 </html>
