@@ -34,7 +34,6 @@ body {
   overflow-x: hidden;
 }
 
-/* subtle grid texture */
 body::before {
   content: '';
   position: fixed;
@@ -69,9 +68,9 @@ header {
 
 @keyframes flutter {
   0%, 100% { transform: scaleX(1) rotate(-2deg); }
-  25% { transform: scaleX(0.7) rotate(2deg); }
-  50% { transform: scaleX(1) rotate(-1deg); }
-  75% { transform: scaleX(0.8) rotate(1deg); }
+  25%  { transform: scaleX(0.7) rotate(2deg); }
+  50%  { transform: scaleX(1) rotate(-1deg); }
+  75%  { transform: scaleX(0.8) rotate(1deg); }
 }
 
 header h1 {
@@ -88,7 +87,6 @@ header p {
   font-size: 0.9rem;
 }
 
-/* specimen cards */
 .collection {
   display: flex;
   flex-direction: column;
@@ -115,7 +113,6 @@ header p {
     inset 0 0 0 1px rgba(26,20,9,0.06);
 }
 
-/* colored tab on left */
 .specimen::before {
   content: '';
   position: absolute;
@@ -125,9 +122,8 @@ header p {
 
 .specimen.gemini::before { background: var(--gemini); }
 .specimen.claude::before { background: var(--claude); }
-.specimen.gpt::before { background: var(--gpt); }
+.specimen.gpt::before    { background: var(--gpt); }
 
-/* pin decoration */
 .pin {
   position: absolute;
   top: 14px;
@@ -147,10 +143,7 @@ header p {
   gap: 16px;
 }
 
-.specimen-info {
-  flex: 1;
-  min-width: 0;
-}
+.specimen-info { flex: 1; min-width: 0; }
 
 .specimen-name {
   font-size: 1.1rem;
@@ -161,7 +154,7 @@ header p {
 
 .specimen.gemini .specimen-name { color: var(--gemini); }
 .specimen.claude .specimen-name { color: var(--claude); }
-.specimen.gpt .specimen-name { color: var(--gpt); }
+.specimen.gpt    .specimen-name { color: var(--gpt); }
 
 .specimen-desc {
   font-size: 0.78rem;
@@ -187,30 +180,26 @@ header p {
 
 .specimen.gemini .capture-btn { color: var(--gemini); }
 .specimen.claude .capture-btn { color: var(--claude); }
-.specimen.gpt .capture-btn { color: var(--gpt); }
+.specimen.gpt    .capture-btn { color: var(--gpt); }
 
 .specimen.gemini .capture-btn:hover { background: var(--gemini); color: #fff; }
 .specimen.claude .capture-btn:hover { background: var(--claude); color: #fff; }
-.specimen.gpt .capture-btn:hover { background: var(--gpt); color: #fff; }
+.specimen.gpt    .capture-btn:hover { background: var(--gpt);    color: #fff; }
 
-.capture-btn.done {
-  border-style: solid;
-  opacity: 0.7;
-}
-
+.capture-btn.done { opacity: 0.75; }
 .specimen.gemini .capture-btn.done { background: var(--gemini); color: #fff; }
 .specimen.claude .capture-btn.done { background: var(--claude); color: #fff; }
-.specimen.gpt .capture-btn.done { background: var(--gpt); color: #fff; }
+.specimen.gpt    .capture-btn.done { background: var(--gpt);    color: #fff; }
 
-/* classification label */
 .classification {
   padding: 6px 28px 12px;
   font-family: 'DM Mono', monospace;
   font-size: 0.68rem;
   color: #bbb0a0;
   border-top: 1px dashed #e8e0d0;
-  font-style: normal;
 }
+
+.code-store { display: none; }
 
 footer {
   margin-top: 36px;
@@ -220,7 +209,6 @@ footer {
   color: #c0b090;
 }
 
-/* scattered deco butterflies */
 .deco {
   position: fixed;
   pointer-events: none;
@@ -231,17 +219,16 @@ footer {
 }
 
 @keyframes drift {
-  0%   { transform: translate(0, 0) rotate(0deg); }
-  25%  { transform: translate(8px, -12px) rotate(8deg); }
-  50%  { transform: translate(-4px, -20px) rotate(-5deg); }
-  75%  { transform: translate(10px, -10px) rotate(10deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
+  0%   { transform: translate(0,0) rotate(0deg); }
+  25%  { transform: translate(8px,-12px) rotate(8deg); }
+  50%  { transform: translate(-4px,-20px) rotate(-5deg); }
+  75%  { transform: translate(10px,-10px) rotate(10deg); }
+  100% { transform: translate(0,0) rotate(0deg); }
 }
 </style>
 </head>
 <body>
 
-<!-- deco -->
 <span class="deco" style="top:8%;left:6%;animation-duration:7s">🦋</span>
 <span class="deco" style="top:15%;right:8%;animation-duration:9s;animation-delay:-3s">🦋</span>
 <span class="deco" style="bottom:20%;left:4%;animation-duration:11s;animation-delay:-5s">🦋</span>
@@ -257,6 +244,7 @@ footer {
 
   <div class="collection">
 
+    <!-- Gemini -->
     <div class="specimen gemini">
       <div class="pin"></div>
       <div class="specimen-body">
@@ -264,11 +252,12 @@ footer {
           <div class="specimen-name">Gemini</div>
           <div class="specimen-desc">auto-scroll → copy</div>
         </div>
-        <button class="capture-btn" onclick="capture(this, 'gemini')">捕獲</button>
+        <button class="capture-btn" onclick="capture(this, 'gemini-code')">捕獲</button>
       </div>
       <div class="classification">在 gemini.google.com 的 F12 Console 貼上執行</div>
     </div>
 
+    <!-- Claude -->
     <div class="specimen claude">
       <div class="pin"></div>
       <div class="specimen-body">
@@ -276,11 +265,12 @@ footer {
           <div class="specimen-name">Claude</div>
           <div class="specimen-desc">auto-scroll → copy，過濾重複</div>
         </div>
-        <button class="capture-btn" onclick="capture(this, 'claude')">捕獲</button>
+        <button class="capture-btn" onclick="capture(this, 'claude-code')">捕獲</button>
       </div>
       <div class="classification">在 claude.ai 的 F12 Console 貼上執行</div>
     </div>
 
+    <!-- ChatGPT -->
     <div class="specimen gpt">
       <div class="pin"></div>
       <div class="specimen-body">
@@ -288,9 +278,9 @@ footer {
           <div class="specimen-name">ChatGPT</div>
           <div class="specimen-desc">手動滾動，右上角按鈕複製</div>
         </div>
-        <button class="capture-btn" onclick="capture(this, 'gpt')">捕獲</button>
+        <button class="capture-btn" onclick="capture(this, 'gpt-code')">捕獲</button>
       </div>
-      <div class="classification">在 chatgpt.com 的 F12 Console 貼上執行，再手動從頂部滾到底</div>
+      <div class="classification">貼上後從頂部慢慢滾到底，再點右上角按鈕複製</div>
     </div>
 
   </div>
@@ -299,34 +289,197 @@ footer {
 
 </div>
 
-<script>
-const codes = {
-    gemini: `(async () => { const container = document.querySelectorAll('.chat-history')[1]; if (!container) { alert("❌ 找不到容器"); return; } let prevHeight = container.scrollHeight; let stuckCount = 0; while (stuckCount < 10) { container.scrollTop = 0; await new Promise(r => setTimeout(r, 1500)); const currentHeight = container.scrollHeight; if (currentHeight === prevHeight) { stuckCount++; } else { stuckCount = 0; prevHeight = currentHeight; } } const turns = container.querySelectorAll('.conversation-container'); let out = ""; turns.forEach((turn) => { const u = turn.querySelector('user-query'); const m = turn.querySelector('model-response'); if (u) out += "--------------------------\\n\\n我：\\n" + u.innerText.trim() + "\\n\\n"; if (m) out += "--------------------------\\n\\nGemini：\\n" + m.innerText.trim() + "\\n\\n"; }); out += "--------------------------"; await navigator.clipboard.writeText(out); alert("✅ Gemini 代碼已複製！"); })();`,
-    claude: `(async () => { const scrollContainer = document.querySelector('.overflow-y-auto.\\\\[scrollbar-gutter\\\\:stable\\\\]'); const inner = scrollContainer.querySelector('.flex-1.flex.flex-col.px-4'); if (!inner) { alert("❌ 找不到容器"); return; } let prevHeight = scrollContainer.scrollHeight; let stuckCount = 0; while (stuckCount < 10) { scrollContainer.scrollTop = 0; await new Promise(r => setTimeout(r, 1500)); const currentHeight = scrollContainer.scrollHeight; if (currentHeight === prevHeight) { stuckCount++; } else { stuckCount = 0; prevHeight = currentHeight; } } const children = Array.from(inner.children); let out = ""; children.forEach((el) => { const child = el.children[0]; if (!child) return; const isUser = child.classList.contains('contents'); const isModel = child.classList.contains('group'); if (!isUser && !isModel) return; const roleLabel = isUser ? "我" : "Claude"; let content = child.innerText.trim(); if (isUser) { content = content.replace(/^You said:\\\s*/i, '').replace(/\\\n\\\n[\\\d月日年\\\s]+$/, '').trim(); const parts = content.split(/\\\n\\\n/); if (parts.length >= 2 && parts[0].trim() === parts[1].trim()) content = parts.slice(1).join('\\\n\\\n').trim(); } else { content = content.replace(/^Claude responded:\\\s*/i, '').trim(); const parts = content.split(/\\\n\\\n/); if (parts.length >= 2 && parts[1].startsWith(parts[0].trim())) content = parts.slice(1).join('\\\n\\\n').trim(); } out += "--------------------------\\n\\n" + roleLabel + "：\\n" + content + "\\n\\n"; }); out += "--------------------------"; await navigator.clipboard.writeText(out); alert("✅ Claude 代碼已複製！"); })();`,
-    gpt: `(function() { const collected = new Map(); const observer = new MutationObserver(() => { document.querySelectorAll('[data-testid^="conversation-turn-"]').forEach(turn => { const id = turn.getAttribute('data-testid'); if (collected.has(id)) return; const text = turn.innerText.trim(); if (!text) return; const isAssistant = !!turn.querySelector('.markdown'); collected.set(id, { role: isAssistant ? 'GPT' : '我', text }); }); }); observer.observe(document.body, { childList: true, subtree: true }); const btn = document.createElement('button'); btn.innerText = '✨ 滾動完成，點我複製 ✨'; btn.style.cssText = 'position:fixed;top:20px;right:20px;z-index:999999;padding:12px 20px;background:#10a37f;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,0.2)'; btn.onclick = async () => { if (collected.size === 0) { alert('⚠️ 還沒攔截到對話！'); return; } let out = ''; collected.forEach(({ role, text }) => { out += "--------------------------\\n\\n" + role + "：\\n" + text + "\\n\\n"; }); out += '--------------------------'; await navigator.clipboard.writeText(out); alert("✅ ChatGPT 代碼已複製！"); observer.disconnect(); btn.remove(); }; document.body.appendChild(btn); })();`
-};
+<!-- code stores: hidden, read via innerText so HTML entities decode correctly -->
+<pre id="gemini-code" class="code-store">(async () => {
+    console.log("🚀 啟動中...");
+    const container = document.querySelectorAll('.chat-history')[1];
+    if (!container) { alert("❌ 找不到容器"); return; }
 
-function capture(btn, platform) {
-    navigator.clipboard.writeText(codes[platform]).then(() => {
+    let prevHeight = container.scrollHeight;
+    let stuckCount = 0;
+    const MAX_STUCK = 10;
+
+    while (stuckCount &lt; MAX_STUCK) {
+        container.scrollTop = 0;
+        await new Promise(r => setTimeout(r, 1500));
+        const currentHeight = container.scrollHeight;
+        if (currentHeight === prevHeight) {
+            stuckCount++;
+            console.log(`⏳ 等待新內容... (${stuckCount}/${MAX_STUCK}) 高度：${currentHeight}`);
+        } else {
+            stuckCount = 0;
+            console.log(`📜 加載中：${prevHeight} → ${currentHeight}`);
+            prevHeight = currentHeight;
+        }
+    }
+
+    console.log("✨ 到頂！開始格式化...");
+    await new Promise(r => setTimeout(r, 1000));
+
+    const turns = container.querySelectorAll('.conversation-container');
+    console.log(`📋 找到 ${turns.length} 輪對話`);
+
+    let formattedText = "";
+    turns.forEach((turn) => {
+        const userEl = turn.querySelector('user-query');
+        const modelEl = turn.querySelector('model-response');
+        if (userEl) formattedText += `--------------------------\n\n我：\n${userEl.innerText.trim()}\n\n`;
+        if (modelEl) formattedText += `--------------------------\n\nGemini：\n${modelEl.innerText.trim()}\n\n`;
+    });
+    formattedText += "--------------------------";
+
+    try {
+        await navigator.clipboard.writeText(formattedText);
+        alert(`✅ 完成！共 ${turns.length} 輪，${Math.round(formattedText.length / 1000)}k 字元`);
+    } catch (e) {
+        const ta = document.createElement("textarea");
+        ta.value = formattedText;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, 9999999);
+        const ok = document.execCommand('copy');
+        alert(ok ? "✅ 複製完成（備用方法）！" : "⚠️ 請手動 Ctrl+C！");
+    }
+})();</pre>
+
+<pre id="claude-code" class="code-store">(async () => {
+    console.log("🚀 啟動中...");
+    const scrollContainer = document.querySelector('.overflow-y-auto.\\[scrollbar-gutter\\:stable\\]');
+    const inner = scrollContainer.querySelector('.flex-1.flex.flex-col.px-4');
+    if (!inner) { alert("❌ 找不到容器"); return; }
+
+    let prevHeight = scrollContainer.scrollHeight;
+    let stuckCount = 0;
+    const MAX_STUCK = 10;
+
+    while (stuckCount &lt; MAX_STUCK) {
+        scrollContainer.scrollTop = 0;
+        await new Promise(r => setTimeout(r, 1500));
+        const currentHeight = scrollContainer.scrollHeight;
+        if (currentHeight === prevHeight) {
+            stuckCount++;
+            console.log(`⏳ 等待新內容... (${stuckCount}/${MAX_STUCK}) 高度：${currentHeight}`);
+        } else {
+            stuckCount = 0;
+            console.log(`📜 加載中：${prevHeight} → ${currentHeight}`);
+            prevHeight = currentHeight;
+        }
+    }
+
+    console.log("✨ 到頂！開始格式化...");
+    await new Promise(r => setTimeout(r, 1000));
+
+    const children = Array.from(inner.children);
+    let formattedText = "";
+    let count = 0;
+
+    children.forEach((el) => {
+        const child = el.children[0];
+        if (!child) return;
+        const isUser = child.classList.contains('contents');
+        const isModel = child.classList.contains('group');
+        if (!isUser &amp;&amp; !isModel) return;
+
+        const roleLabel = isUser ? "我" : "Claude";
+        let content = child.innerText.trim()
+            .replace(/^You said:\s*/i, '')
+            .replace(/^Claude responded:\s*/i, '');
+
+        if (isUser) {
+            content = content.replace(/\n\n[\d月日年\s]+$/, '').trim();
+            const parts = content.split(/\n\n/);
+            if (parts.length >= 2 &amp;&amp; parts[0].trim() === parts[1].trim()) {
+                content = parts.slice(1).join('\n\n').trim();
+            }
+        } else {
+            const parts = content.split(/\n\n/);
+            if (parts.length >= 2 &amp;&amp; parts[1].startsWith(parts[0].trim())) {
+                content = parts.slice(1).join('\n\n').trim();
+            }
+        }
+
+        formattedText += `--------------------------\n\n${roleLabel}：\n${content}\n\n`;
+        count++;
+    });
+
+    formattedText += "--------------------------";
+
+    try {
+        await navigator.clipboard.writeText(formattedText);
+        alert(`✅ 完成！共 ${count} 段，${Math.round(formattedText.length / 1000)}k 字元`);
+    } catch (e) {
+        const ta = document.createElement("textarea");
+        ta.value = formattedText;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, 9999999);
+        const ok = document.execCommand('copy');
+        alert(ok ? "✅ 複製完成（備用方法）！" : "⚠️ 請手動 Ctrl+C！");
+    }
+})();</pre>
+
+<pre id="gpt-code" class="code-store">(function() {
+    console.clear();
+    console.log("🛠️ 啟動！請從對話最上方手動慢慢往下滾。");
+
+    const collected = new Map();
+
+    const observer = new MutationObserver(() => {
+        document.querySelectorAll('[data-testid^="conversation-turn-"]').forEach(turn => {
+            const id = turn.getAttribute('data-testid');
+            if (collected.has(id)) return;
+            const text = turn.innerText.trim();
+            if (!text) return;
+            const isAssistant = !!turn.querySelector('.markdown');
+            collected.set(id, { role: isAssistant ? 'GPT' : '我', text });
+            console.log(`📥 ${isAssistant ? 'GPT' : '我'} (${id})`);
+        });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    const btn = document.createElement('button');
+    btn.innerText = '✨ 滾動完成，點我複製 ✨';
+    btn.style.cssText = 'position:fixed;top:20px;right:20px;z-index:999999;padding:12px 20px;background:#10a37f;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;box-shadow:0 4px 12px rgba(0,0,0,0.2)';
+
+    btn.onclick = async () => {
+        if (collected.size === 0) { alert('⚠️ 還沒攔截到對話，請繼續滾動！'); return; }
+        let out = '';
+        collected.forEach(({ role, text }) => {
+            out += `--------------------------\n\n${role}：\n${text}\n\n`;
+        });
+        out += '--------------------------';
+        try {
+            await navigator.clipboard.writeText(out);
+            alert(`✅ 完成！共 ${collected.size} 段`);
+        } catch (e) {
+            console.log(out);
+            alert('⚠️ 剪貼簿失敗，請從 Console 手動複製');
+        }
+        observer.disconnect();
+        btn.remove();
+    };
+
+    document.body.appendChild(btn);
+})();</pre>
+
+<script>
+function capture(btn, id) {
+    const text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text).then(() => {
         btn.textContent = '✓ 已捕獲';
         btn.classList.add('done');
-        setTimeout(() => {
-            btn.textContent = '捕獲';
-            btn.classList.remove('done');
-        }, 2200);
+        setTimeout(() => { btn.textContent = '捕獲'; btn.classList.remove('done'); }, 2200);
     }).catch(() => {
         const ta = document.createElement('textarea');
-        ta.value = codes[platform];
+        ta.value = text;
         document.body.appendChild(ta);
         ta.select();
         document.execCommand('copy');
         ta.remove();
         btn.textContent = '✓ 已捕獲';
         btn.classList.add('done');
-        setTimeout(() => {
-            btn.textContent = '捕獲';
-            btn.classList.remove('done');
-        }, 2200);
+        setTimeout(() => { btn.textContent = '捕獲'; btn.classList.remove('done'); }, 2200);
     });
 }
 </script>
